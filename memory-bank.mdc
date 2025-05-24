@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Maintain concise project documentation for context continuity across memory resets
+globs: "**/*"
+alwaysApply: true
+---
+# Memory Bank System
+
+Memory resets between sessions. MUST read ALL memory bank files at start of EVERY task.
+
+<rule>
+name: memory_bank_system
+description: Maintain concise project documentation for context continuity
+filters:
+  - type: event
+    pattern: "session_start"
+  - type: content
+    pattern: "update memory bank"
+
+actions:
+  - type: enforce
+    message: |
+      MEMORY BANK PROTOCOL
+
+      **CRITICAL**: Memory bank files are the ONLY resource available after session reset. 
+      Agent must understand EVERYTHING just by reading these files. No other context exists.
+
+      **REQUIRED FILES** (memory-bank/):
+      1. `projectbrief.md` - Core requirements and scope
+      2. `productContext.md` - What this solves and user goals  
+      3. `activeContext.md` - Current focus and next steps
+      4. `systemPatterns.md` - Architecture and key decisions
+      5. `techContext.md` - Technologies and constraints
+      6. `progress.md` - Status and known issues
+      7. `view.md` - Architecture diagrams
+      8. `[filename].md` - For each code file explanation
+
+      **WORKFLOW**:
+      - Start: Read ALL memory bank files
+      - Work: Update documentation after changes
+      - Cleanup: Remove outdated info, keep minimal
+
+      **UPDATE TRIGGERS**:
+      - New project patterns discovered
+      - After significant changes  
+      - User says "update memory bank"
+      - Context needs clarification
+
+      **BREVITY RULE**: 
+      - Each file as brief as possible
+      - 1 sentence better than 100
+      - Clean out outdated info
+      - No unnecessary details
+
+examples:
+  - input: "update memory bank"
+    output: "Review ALL files, update current state, remove outdated info"
+
+metadata:
+  priority: critical
+  version: 2.0
+  enforcement: strict
+</rule>

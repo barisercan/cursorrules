@@ -1,0 +1,85 @@
+---
+description: Maintain core files documentation in memory-bank for easy codebase navigation
+globs: "**/*"
+alwaysApply: true
+---
+---
+description: Maintain core files documentation in memory-bank for easy codebase navigation
+globs: "**/*"
+alwaysApply: true
+---
+# Core Files Documentation Rule
+
+Automatically maintain documentation of core source files in `memory-bank/coreFiles.md`.
+
+<rule>
+name: core_files_documentation
+description: Update core files documentation when source files change
+filters:
+  # Apply to all Python files under src/ (excluding main.py and __init__.py)
+  - type: file_change
+    pattern: "src/**/*.py"
+  - type: file_create
+    pattern: "src/**/*.py"
+  # Apply when core files documentation is requested
+  - type: content
+    pattern: "(?i)(update|document|core files|coreFiles)"
+
+actions:
+  - type: enforce
+    message: |
+      CORE FILES DOCUMENTATION PROTOCOL
+
+      **REQUIRED**: Update `memory-bank/coreFiles.md` when core source files change
+
+      **TARGET FILES**: All .py files under src/ EXCEPT:
+      - main.py files 
+      - __init__.py files
+      - Test files (tests/ directory)
+
+      **DOCUMENTATION FORMAT**:
+      ```
+      ## path/to/filename.py
+      **Description**: Brief explanation of file purpose
+      **Classes**:
+        - ClassName (line X): What this class does
+        - AnotherClass (line Y): Purpose and responsibility
+      **Notable Methods**:
+        - method_name() (line Z): Key functionality description
+        - important_method() (line W): What it accomplishes
+      **Important Notes**:
+        - Key implementation details
+        - Performance characteristics
+        - API patterns or special behaviors
+        - Known limitations or warnings
+      ```
+
+      **UPDATE TRIGGERS**:
+      - New core file created under src/
+      - Existing core file modified (classes/methods added/changed)
+      - User requests "update core files" or similar
+      - Significant refactoring or architectural changes
+
+      **MAINTENANCE RULES**:
+      - Keep documentation under 20 lines per file
+      - Focus on classes, key methods, and important notes
+      - Include line numbers for easy navigation
+      - Update when file structure changes significantly
+      - Remove entries when files are deleted
+
+examples:
+  - input: "New file: src/trading/strategy_engine.py"
+    output: "Add documentation entry to memory-bank/coreFiles.md"
+
+  - input: "Modified: src/market_data_collector/binance/rest/symbol_fetcher.py"
+    output: "Update existing entry with new classes/methods"
+
+  - input: "update core files documentation"
+    output: "Review all src/ files and update coreFiles.md"
+
+metadata:
+  priority: high
+  version: 1.0
+  enforcement: automatic
+  dependencies: ["memory-bank"]
+</rule>
